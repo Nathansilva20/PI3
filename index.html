@@ -43,7 +43,31 @@
             color: rgb(0, 0, 0);
         }
 
-
+        /* Estilos para Missão, Visão e Valores */
+        .mission-section {
+            background-color: #ffffff; /* Fundo branco para contraste */
+            padding: 40px;
+            margin-top: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra para destaque */
+        }
+        .mission-section h2 {
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .mission-section h3 {
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        .mission-section p, .mission-section ul {
+            margin-bottom: 20px;
+        }
+        .mission-section ul {
+            padding-left: 20px; /* Espaçamento para as listas */
+        }
+        .mission-section ul li {
+            margin-bottom: 10px; /* Espaçamento entre os itens da lista */
+        }
     </style>
 </head>
 <body>
@@ -103,12 +127,42 @@
                 </div>
             </div>
         </div>
-    </div>
 
-     <!-- Footer -->
-     <footer class="py-4 bg-light mt-auto">
+<!-- Missão, Visão e Valores -->
+<div class="mission-section bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center mb-5">
+                <h3 class="section-title mb-4">Missão e Visão de Futuro</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mission-info">
+                    <h4 class="info-title">Missão</h4>
+                    <p class="info-text">
+                        Promover soluções tecnológicas e sociais por meio de ações integradas de pesquisa, assistência técnica e extensão rural, visando o desenvolvimento do Espírito Santo.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mission-info">
+                    <h4 class="info-title">Visão de Futuro</h4>
+                    <p class="info-text">
+                        O Incaper será referência em soluções integradas de pesquisa, assistência técnica e extensão rural, contribuindo para o desenvolvimento sustentável do Espírito Santo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Footer -->
+    <footer class="py-4 bg-light mt-auto">
         <div class="container text-center">
-           
+            <!-- Footer content can go here -->
         </div>
     </footer>
 
@@ -117,3 +171,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+

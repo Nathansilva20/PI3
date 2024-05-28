@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Cadastro</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- Custom Styles -->
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-white">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header bg-primary text-white">
+                                    <h3 class="text-center font-weight-light my-4">Crie sua conta</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form id="cadastroForm">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" id="inputFirstName" type="text" placeholder="Seu nome">
+                                                    <label for="inputFirstName">Nome</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input class="form-control" id="inputLastName" type="text" placeholder="Seu sobrenome">
+                                                    <label for="inputLastName">Sobrenome</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com">
+                                            <label for="inputEmail">Email</label>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" id="inputPassword" type="password" placeholder="Crie uma senha">
+                                                    <label for="inputPassword">Senha</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" id="inputPasswordConfirm" type="password" placeholder="Confirme a senha">
+                                                    <label for="inputPasswordConfirm">Confirme a Senha</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 mb-0">
+                                            <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Criar Conta</button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3">
+                                    <div class="small text-dark"><a href="login.html">Já possui uma conta? Ir para login</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!-- Bootstrap Bundle JS (Bootstrap JS + Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+
+    
+
+    <script>
+        // Sua configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD1SYqZjsayX8mLedF6CNmD28ld2tiq8j8",
+            authDomain: "pi03-dbc4a.firebaseapp.com",
+            databaseURL: "https://pi03-dbc4a-default-rtdb.firebaseio.com",
+            projectId: "pi03-dbc4a",
+            storageBucket: "pi03-dbc4a.appspot.com",
+            messagingSenderId:"894651684291",
+            appId: "1:894651684291:web:a11f99fe74ab1773599976",
+            measurementId: "G-0E0KZ2MX9L"
+        };
+
+        // Inicialize o Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+       // const analytics = firebase.analytics();
+
+        // Referência ao formulário
+        const form = document.getElementById('cadastroForm');
+
+        // Adiciona um evento de "submit" ao formulário
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Previne o envio padrão do formulário
+
+            
+            console.log("Evento de envio do formulário acionado!"); // Verifica se o evento está sendo acionado corretamente
+
+            // Captura dos valores dos campos do formulário
+            const nome = document.getElementById('inputFirstName').value;
+            const sobrenome = document.getElementById('inputLastName').value;
+            const email = document.getElementById('inputEmail').value;
+            const senha = document.getElementById('inputPassword').value;
+            const confirmarSenha = document.getElementById('inputPasswordConfirm').value;
+
+            console.log("Nome:", nome);
+            console.log("Sobrenome:", sobrenome);
+            console.log("Email:", email);
+            console.log("Senha:", senha);
+            console.log("Confirmação de senha:", confirmarSenha);
+
+            // Verifica se as senhas coincidem
+            if (senha !== confirmarSenha) {
+                alert("As senhas não coincidem.");
+                return;
+            }
+
+            // Salva os dados no Firebase
+            firebase.database().ref('usuarios').push({
+                nome: nome,
+                sobrenome: sobrenome,
+                email: email,
+                senhaHash: senha // Adiciona a senha (não recomendado para produção, apenas para fins de exemplo)
+            }).then(() => {
+                alert("Usuário cadastrado com sucesso!");
+                form.reset(); // Limpa o formulário após o cadastro
+            }).catch((error) => {
+                console.error("Erro ao cadastrar usuário: ", error);
+            });
+        });
+    </script>
+</body>
+</html>

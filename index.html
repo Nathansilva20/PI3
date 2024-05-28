@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incaper - Monitoramento Ambiental</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 56px;
+            background-color: #f8f9fa; /* Cor de fundo do exemplo fornecido */
+        }
+        .hero {
+            background-image: url('img/incaper.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-text {
+            text-align: center;
+            color: white;
+            background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente para melhorar a legibilidade */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .info-card {
+            margin-top: 20px;
+        }
+        /* Estilos para Navbar e Footer */
+        .navbar {
+            background-color: #212529 !important; /* Cor do Navbar */
+        }
+
+        .navbar-brand {
+            margin-right: auto; /* Adicionando margem à direita para posicionar o título à esquerda */
+        }
+
+        footer {
+            background-color: #212529; /* Cor do Footer */
+            color: rgb(0, 0, 0);
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Incaper</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+            </div>
+            <a class="btn btn-outline-light" href="login.html">Login</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <!-- Empty container to set the background image -->
+        </div>
+    </header>
+    <div class="container text-center mt-4">
+        <h1 class="display-4">Monitoramento Ambiental Incaper</h1>
+        <p class="lead">Informações em tempo real sobre o meio ambiente captadas por sensores.</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Destaques -->
+        <div class="row">
+            <div class="col-lg-4 info-card">
+                <div class="card">
+                    <img src="img/umidade.png" class="card-img-top" alt="Sensor 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Umidade</h5>
+                        <p class="card-text">Informações detalhadas sobre a umidade do solo em diversas regiões.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 info-card">
+                <div class="card">
+                    <img src="img/temperatura.jpg" class="card-img-top" alt="Sensor 2">
+                    <div class="card-body">
+                        <h5 class="card-title">Temperatura</h5>
+                        <p class="card-text">Monitoramento de temperatura ambiente em tempo real.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 info-card">
+                <div class="card">
+                    <img src="img/vento.jpg" class="card-img-top" alt="Sensor 3">
+                    <div class="card-body">
+                        <h5 class="card-title">Velocidade do vento</h5>
+                        <p class="card-text">Monitoramento contínuo da velocidade do vento para prever condições climáticas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Footer -->
+     <footer class="py-4 bg-light mt-auto">
+        <div class="container text-center">
+           
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

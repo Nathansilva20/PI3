@@ -13,6 +13,25 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     <!-- Custom Styles -->
     <link href="css/styles.css" rel="stylesheet">
+    <style>
+        .custom-header {
+            background-color: #343a40;
+        }
+
+        .custom-header:hover {
+            background-color: #495057;
+        }
+
+        .custom-btn {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .custom-btn:hover {
+            background-color: #495057;
+            color: white;
+        }
+    </style>
 </head>
 <body class="bg-white">
     <div id="layoutAuthentication">
@@ -22,7 +41,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-7">
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                <div class="card-header bg-primary text-white">
+                                <div class="card-header text-white custom-header">
                                     <h3 class="text-center font-weight-light my-4">Crie sua conta</h3>
                                 </div>
                                 <div class="card-body">
@@ -60,7 +79,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-4 mb-0">
-                                            <div class="d-grid"><button class="btn btn-primary btn-block" type="submit">Criar Conta</button></div>
+                                            <div class="d-grid"><button class="btn custom-btn btn-block" type="submit">Criar Conta</button></div>
                                         </div>
                                     </form>
                                 </div>
@@ -80,8 +99,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
-
-    
 
     <script>
         // Sua configuração do Firebase
@@ -107,7 +124,6 @@
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // Previne o envio padrão do formulário
 
-            
             console.log("Evento de envio do formulário acionado!"); // Verifica se o evento está sendo acionado corretamente
 
             // Captura dos valores dos campos do formulário

@@ -10,6 +10,36 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        .btn-red-rounded {
+            background-color: rgb(223, 39, 39);
+            color: white;
+            border-radius: 20px;
+            padding: 8px 17px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-red-rounded:hover {
+            background-color: darkred;
+        }
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .table thead th {
+            background-color: #343a40;
+            color: white;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .table tbody td {
+            border: 1px solid #dee2e6;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -31,7 +61,7 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Settings</a></li>
                     <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                    <li><a class="dropdown-item" href="index.html">Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -70,18 +100,40 @@
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logado com:</div>
-                    Incaper
+                    
                 </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="h3 mt-4">Histórico de Umidade</h1>
+                    <div class="header-row">
+                        <h1 class="h3 mt-4">Histórico de Umidade</h1>
+                        <button class="btn-red-rounded">Baixar Relatório</button>
+                    </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Histórico</li>
                     </ol>
-                   
+
+                    <!-- Tabela para o Histórico de Umidade -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="humidityTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Umidade (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão preenchidos pelo JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -90,10 +142,29 @@
     <script src="js/chart-umidade.js"></script>
     <script src="js/chart-vento.js"></script>
     <script src="js/chart-Evapotranspiracao.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('https://fertirrigacao-0324-default-rtdb.firebaseio.com/Fazenda/umidade.json')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('#humidityTable tbody');
+                    Object.keys(data).forEach(key => {
+                        const row = document.createElement('tr');
+                        const dateCell = document.createElement('td');
+                        const humidityCell = document.createElement('td');
+
+                        dateCell.textContent = new Date(parseInt(key)).toLocaleString();
+                        humidityCell.textContent = data[key];
+
+                        row.appendChild(dateCell);
+                        row.appendChild(humidityCell);
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Erro ao buscar dados:', error));
+        });
+    </script>
 </body>
 </html>
-

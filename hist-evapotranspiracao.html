@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Historico - Evapotranspiraçao</title>
+    <title>Historico - Evapotranspiração</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -72,17 +72,17 @@
                         </a>
                         <div class="sb-sidenav-menu-heading">Configurações</div>
                         <li class="nav-item">
-                            <a class="nav-link" href="#controles">
+                            <a class="nav-link" href="controles.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
                                 Controles
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="#gerenciamento">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
                                 Gerenciamento
                             </a>
-                        </li>
+                        </li> -->
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -95,8 +95,8 @@
             <main>
                 <div class="container-fluid px-4">
                     <div class="header-row">
-                        <h1 class="h3 mt-4">Histórico de Evapotranspiraçao</h1>
-                        <button class="btn-red-rounded">Baixar Relatório</button>
+                        <h1 class="h3 mt-4">Histórico de Evapotranspiração</h1>
+                        <button class="btn-red-rounded" id="downloadReport">Baixar Relatório</button>
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Histórico</li>
@@ -107,7 +107,7 @@
                             <thead>
                                 <tr>
                                     <th>Data</th>
-                                    <th>Evapotranspiraçao</th>
+                                    <th>Evapotranspiração</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -129,6 +129,11 @@
     <script src="js/chart-vento.js"></script>
     <script src="js/chart-Evapotranspiracao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+
+    <!-- Inclua jsPDF via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <!-- Inclua jsPDF-AutoTable via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -166,6 +171,39 @@
                     tableBody.appendChild(row);
                 })
                 .catch(error => console.error('Erro ao buscar dados de temperatura:', error));
+
+            // Evento de clique para gerar e baixar o PDF
+            document.getElementById('downloadReport').addEventListener('click', function () {
+                // Importar jsPDF e autoTable
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Obter os dados da tabela
+                const rows = document.querySelectorAll('#EvapoTable tbody tr');
+                const tableData = [];
+
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const rowData = [];
+                    cells.forEach(cell => {
+                        rowData.push(cell.innerText);
+                    });
+                    tableData.push(rowData);
+                });
+
+                // Adicionar título
+                doc.text('Histórico de Evapotranspiração', 14, 15);
+
+                // Adicionar tabela ao PDF
+                doc.autoTable({
+                    head: [['Data', 'Evapotranspiração']],
+                    body: tableData,
+                    startY: 20
+                });
+
+                // Salvar o documento PDF
+                doc.save('relatorio_evapotranspiracao.pdf');
+            });
         });
 
         // Função para calcular a evapotranspiração usando o método Blaney-Criddle

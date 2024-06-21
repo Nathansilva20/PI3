@@ -146,14 +146,22 @@
             fetch(temperaturaMediaURL)
                 .then(response => response.json())
                 .then(data => {
+                    // Verifique a estrutura dos dados recebidos
+                    console.log('Dados recebidos:', data);
+
                     // Obtendo a temperatura média do último registro
                     const temperaturaMedia = Object.values(data)[Object.values(data).length - 1];
+                    console.log('Temperatura Média:', temperaturaMedia);
 
                     // Dados de exemplo de precipitação (substitua pelos seus dados reais)
                     const precipitacao = 7.8; // em mm  
 
+
+                   
+
                     // Calcular evapotranspiração usando o método Blaney-Criddle
                     const evapotranspiracao = calcularEvapotranspiracaoBlaneyCriddle(temperaturaMedia, precipitacao);
+                    console.log('Evapotranspiração Calculada:', evapotranspiracao);
 
                     // Exibir o resultado na tabela
                     const tableBody = document.querySelector('#EvapoTable tbody');

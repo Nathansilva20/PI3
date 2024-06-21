@@ -10,6 +10,9 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Incluir jsPDF e jsPDF-AutoTable via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <style>
         .btn-red-rounded {
             background-color: rgb(223, 39, 39);
@@ -43,14 +46,9 @@
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <!-- Navbar Brand-->
         <a class="navbar-brand ps-3"> Incaper </a>
-        <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-         
-        <!-- Navbar Right Section -->
         <div class="ms-auto d-flex align-items-center">
-            <!-- Navbar Logout-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -62,7 +60,6 @@
                 </li>
             </ul>
         </div>
-
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -74,7 +71,6 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-                
                         <div class="sb-sidenav-menu-heading">Configurações</div>
                         <li class="nav-item">
                             <a class="nav-link" href="controles.html">
@@ -82,17 +78,10 @@
                                 Controles
                             </a>
                         </li>
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="#gerenciamento">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
-                                Gerenciamento
-                            </a>
-                        </li> -->
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logado com:</div>
-                    
                 </div>
             </nav>
         </div>
@@ -101,12 +90,11 @@
                 <div class="container-fluid px-4">
                     <div class="header-row">
                         <h1 class="h3 mt-4">Histórico de Umidade</h1>
-                        <button class="btn-red-rounded">Baixar Relatório</button>
+                        <button class="btn-red-rounded" id="downloadReport">Baixar Relatório</button>
                     </div>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Histórico</li>
                     </ol>
-
                     <!-- Tabela para o Histórico de Umidade -->
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="humidityTable" width="100%" cellspacing="0">
@@ -121,41 +109,110 @@
                             </tbody>
                         </table>
                     </div>
+                    <div id="ultimo-valor-umidade"></div>
                 </div>
             </main>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="js/chart-temperatura.js"></script>
-    <script src="js/chart-radiacao.js"></script>
-    <script src="js/chart-umidade.js"></script>
-    <script src="js/chart-vento.js"></script>
-    <script src="js/chart-Evapotranspiracao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-
     <script>
+        async function fetchUmidadeData(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar os dados de umidade.');
+                }
+                const data = await response.json();
+                console.log('Dados de umidade recebidos:', data);
+                return data; // Retornar os dados JSON
+            } catch (error) {
+                console.error('Erro:', error.message);
+                return null;
+            }
+        }
+
+        async function updateUmidadeTable() {
+            const url = 'https://fertirrigacao-0324-default-rtdb.firebaseio.com/Fazenda.json'; // Atualizada para buscar os dados corretamente
+            const data = await fetchUmidadeData(url);
+            if (data !== null && data.umidade !== undefined) {
+                const umidadeData = data.umidade;
+                const tableBody = document.querySelector('#humidityTable tbody');
+                const currentTime = new Date().toLocaleString();
+
+                // Adicionar a nova entrada de umidade como a primeira linha da tabela
+                const newRow = tableBody.insertRow(0);
+                const dateCell = newRow.insertCell(0);
+                const humidityCell = newRow.insertCell(1);
+
+                dateCell.textContent = currentTime;
+                humidityCell.textContent = umidadeData;
+
+                // Atualizar o último valor de umidade
+                document.getElementById('ultimo-valor-umidade').innerText = 'Último valor de umidade: ' + umidadeData;
+            } else {
+                document.getElementById('ultimo-valor-umidade').innerText = 'Nenhum dado de umidade disponível.';
+                console.error('Não foi possível obter os dados de umidade.');
+            }
+        }
+
+        // Função para calcular a média dos valores de umidade
+        function calcularMediaUmidade() {
+            const rows = document.querySelectorAll('#humidityTable tbody tr');
+            let sum = 0;
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const umidade = parseFloat(cells[1].innerText);
+                sum += umidade;
+            });
+            const media = sum / rows.length;
+            return media.toFixed(2);
+        }
+
+        // Chamar a função para atualizar a tabela ao carregar a página
+        window.addEventListener('load', function () {
+            updateUmidadeTable();
+            setInterval(updateUmidadeTable, 3000); // Atualizar a tabela a cada 3 segundos
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('https://fertirrigacao-0324-default-rtdb.firebaseio.com/Fazenda/umidade.json')
-                .then(response => response.json())
-                .then(data => {
-                    const tableBody = document.querySelector('#humidityTable tbody');
-                    Object.keys(data).forEach(key => {
-                        const row = document.createElement('tr');
-                        const dateCell = document.createElement('td');
-                        const humidityCell = document.createElement('td');
+            // Evento de clique para gerar e baixar o PDF
+            document.getElementById('downloadReport').addEventListener('click', function () {
+                // Importar jsPDF e autoTable
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
 
-                        dateCell.textContent = new Date(parseInt(key)).toLocaleString();
-                        humidityCell.textContent = data[key];
+                // Obter os dados da tabela
+                const rows = document.querySelectorAll('#humidityTable tbody tr');
+                const tableData = [];
 
-                        row.appendChild(dateCell);
-                        row.appendChild(humidityCell);
-                        tableBody.appendChild(row);
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const rowData = [];
+                    cells.forEach(cell => {
+                        rowData.push(cell.innerText);
                     });
-                })
-                .catch(error => console.error('Erro ao buscar dados:', error));
+                    tableData.push(rowData);
+                });
+
+                // Adicionar título
+                doc.text('Histórico de Umidade', 14, 15);
+
+                // Adicionar tabela ao PDF
+                doc.autoTable({
+                    head: [['Data', 'Umidade (%)']],
+                    body: tableData,
+                    startY: 20
+                });
+
+                // Calcular e adicionar a média de umidade ao PDF
+                const mediaUmidade = calcularMediaUmidade();
+                doc.setFontSize(10); // Define o tamanho da fonte para a média
+                doc.text(`Média de Umidade: ${mediaUmidade}%`, 14, doc.lastAutoTable.finalY + 10);
+
+                // Salvar o documento PDF
+                doc.save('relatorio_umidade.pdf');
+            });
         });
     </script>
 </body>

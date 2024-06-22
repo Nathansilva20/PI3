@@ -137,11 +137,11 @@ function calcularEvapotranspiracaoBlaneyCriddle(temperaturaMedia, precipitacao) 
 // Função para aplicar a regra ao selecionar uma região
 function aplicarRegra(regiao) {
     const regioes = {
-        "Região Metropolitana": 10,
-        "Litoral Sul": 10.5,
-        "Norte": 11,
-        "Serrana": 11,
-        "Central": 11
+        "Região Metropolitana": 0.41,
+        "Litoral Sul": 0.4375,
+        "Norte": 0.458,
+        "Serrana": 0.458,
+        "Central": 0.458
     };
 
     if (regiao in regioes) {

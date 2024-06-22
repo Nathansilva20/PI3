@@ -115,16 +115,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <script>
+
+const precipitacao = {
+    valor: null
+};
+
         document.addEventListener('DOMContentLoaded', function() {
             const temperaturaURL = 'https://fertirrigacao-0324-default-rtdb.firebaseio.com/Fazenda/temperatura.json';
-            const precipitacao = 7.8; // em mm
+            const precipitacao = 0.41; // em mm
 
             async function fetchTemperaturaData() {
                 try {
                     const response = await fetch(temperaturaURL);
                     if (!response.ok) {
                         throw new Error('Erro ao buscar dados de temperatura.');
-                    }
+                    } 
                     const data = await response.json();
                     return data;
                 } catch (error) {

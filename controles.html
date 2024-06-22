@@ -10,33 +10,29 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <style>
-        .dropdown-menu {
-            max-height: 300px; /* Ajuste a altura máxima conforme necessário */
-            overflow-y: auto; /* Adiciona uma barra de rolagem vertical caso o conteúdo seja maior */
-        }
-    </style>
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3"> Incaper </a>
+        <a class="navbar-brand ps-3" href="index.html"> Incaper </a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-       
-        <div class="ms-auto d-flex align-items-center">
-            <!-- Navbar Logout-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user fa-fw"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="index.html">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+            </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -56,6 +52,12 @@
                                 Controles
                             </a>
                         </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="#gerenciamento">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tasks"></i></div>
+                                Gerenciamento
+                            </a>
+                        </li> -->
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -76,10 +78,10 @@
                             <div class="card bg-primary text-white mb-4">
                                 <div class="card-body">
                                     <div class="dropdown">
-                                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownRegioesButton" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 200px;">
+                                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="dropdownRegioes" data-bs-toggle="dropdown" aria-expanded="false">
                                             Selecione a Região
                                         </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownRegioesButton">
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownRegioes">
                                             <li><a class="dropdown-item" href="#" onclick="aplicarRegra('Região Metropolitana')">Região Metropolitana</a></li>
                                             <li><a class="dropdown-item" href="#" onclick="aplicarRegra('Litoral Sul')">Litoral Sul</a></li>
                                             <li><a class="dropdown-item" href="#" onclick="aplicarRegra('Norte')">Norte</a></li>
@@ -91,6 +93,7 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </main>
         </div>
@@ -108,13 +111,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 
     <script>
-        function aplicarRegra(regiao) {
-            const defaultText = "Selecione a Região";
-            document.getElementById('dropdownRegioesButton').textContent = `${defaultText}: ${regiao}`;
-            // Aqui você pode adicionar qualquer outra lógica que precise ao selecionar uma região
-            console.log("Região selecionada:", regiao);
-        }
-
         // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAs10Sx4L-ifazTTLE2R9D2WekYtZUHs4g",
@@ -129,17 +125,17 @@
         firebase.initializeApp(firebaseConfig);
 
         // Get logged in user and display email
-        firebase.auth().onAuthStateChanged(function(user) {
-            console.log(user);
-            if (user) {
-                // User is signed in
-                const email = user.email;
-                document.getElementById('userEmail').textContent = email;
-            } else {
-                // No user is signed in
-                document.getElementById('userEmail').textContent = 'Não logado';
-            }
-        });
+            firebase.auth().onAuthStateChanged(function(user) {
+                console.log(user);
+        if (user) {
+            // User is signed in
+            const email = user.email; // Alterado de user.email para user.email
+            document.getElementById('userEmail').textContent = email;
+        } else {
+            // No user is signed in
+            document.getElementById('userEmail').textContent = 'Não logado';
+        }
+    });
     </script>
 </body>
 </html>
